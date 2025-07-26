@@ -106,13 +106,11 @@
       <option value="Director">Director</option>
     </select>
 
-    <div id="upiAppSection" style="display:none; margin-top: 20px;">
-      <button type="button" onclick="payViaUPI()">Click to Pay via UPI App</button>
-    </div>
+    <button type="button" onclick="initiateUPIPayment()">Pay via UPI</button>
 
-    <div id="qrSection" style="display:none;">
-      <p><strong>Scan this QR Code to Pay</strong></p>
-      <img src="./QR_VPR_LAW_GROUP.jpeg" alt="UPI QR Code">
+    <div id="qrSection" style="display: none;">
+      <p><strong>OR Scan this QR Code:</strong></p>
+      <img src="https://chat.openai.com/mnt/data/QR_VPR_LAW_GROUP.jpeg" alt="UPI QR Code">
       <p><strong>Merchant:</strong> V P K LAW GROUPS<br><strong>UPI ID:</strong> 9036527873@sbi</p>
     </div>
 
@@ -130,25 +128,22 @@
     setTimeout(() => toast.style.display = "none", 3000);
   }
 
-  function payViaUPI() {
+  function initiateUPIPayment() {
+    const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
     const upiId = "9036527873@sbi";
     const name = "V P K LAW GROUPS";
     const amount = 500;
     const note = "Registration Fee";
 
     const upiLink = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR&tn=${encodeURIComponent(note)}`;
-    window.location.href = upiLink;
-  }
 
-  // Detect device and show UPI or QR
-  window.onload = () => {
-    const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
     if (isMobile) {
-      document.getElementById("upiAppSection").style.display = "block";
+      window.location.href = upiLink;
     } else {
       document.getElementById("qrSection").style.display = "block";
+      alert("Please scan the QR code using any UPI app and then submit the form.");
     }
-  };
+  }
 
   const form = document.getElementById("userForm");
   form.addEventListener("submit", function(event) {
